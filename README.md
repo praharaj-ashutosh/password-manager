@@ -37,12 +37,18 @@ A simple yet effective Password Manager built with Python using the `tkinter` li
 3. Click **Generate Password** to create a random password or enter your own.
 4. Click **Add** to save the website, email, and password to `data.txt`.
 
-### Example Data Format in `data.txt`:
+### Example Data Format in `data.json`:
 ```
-example.com | user@example.com | P@ssw0rd12345
+{
+  "example.com": {
+    "email": "user@example.com",
+    "password": "strongpassword123!"
+  }
+}
 ```
 
 ## Project Structure
+- **Search Password**: Searches given password from the data
 - **Password Generator**: Creates random passwords with 10 letters, 5 symbols, and 5 numbers.
 - **Save Data**: Validates input fields and appends the data to `data.txt` in a user-friendly format.
 - **UI**: Built with `tkinter`, featuring labels, entry fields, and buttons for user interaction.

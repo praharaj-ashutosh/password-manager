@@ -4,6 +4,20 @@ from tkinter import messagebox
 import random
 import json
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search_password():
+    with open("data.json") as data_file:
+        data = json.load(data_file)
+
+        try:
+            search = website_entry.get()
+            search_result = data[search]
+            search_email = search_result['email']
+            search_pw = search_result['password']
+            messagebox.showinfo(title=f"{search}", message=f"Email:{search_email}\nPassword:{search_pw}:\n")
+        except KeyError:
+            messagebox.showinfo(title="Information", message=f"{search} does not exist")
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def password_generator():
     letters_needed = 10
@@ -93,7 +107,9 @@ password_entry = tkinter.Entry(width=35)
 password_entry.grid(row=3,column=1,sticky="W")
 
 #Buttons
-generate_password_button = tkinter.Button(text="Generate Password",command=password_generator)
+search_button = tkinter.Button(text="Search",width=15,command=search_password)
+search_button.grid(row=1,column=2,sticky="W",padx=10)
+generate_password_button = tkinter.Button(text="Generate Password",width=15,command=password_generator)
 generate_password_button.grid(row=3,column=2,sticky="W",padx=10)
 add_button = tkinter.Button(text="Add",width=29,command=save_data)
 add_button.grid(row=4,column=1,columnspan=2,sticky="W")
