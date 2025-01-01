@@ -2,6 +2,7 @@ import tkinter
 from tkinter import END
 from tkinter import messagebox
 import random
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def password_generator():
@@ -23,6 +24,7 @@ def password_generator():
     random.shuffle(password)
     randomized_pw = "".join(password)
 
+    password_entry.delete(0, END)
     password_entry.insert(0,randomized_pw)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def validate_data(website,email,password):
@@ -36,19 +38,31 @@ def save_data():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {    
+                website : {
+                    "email":email,
+                    "password":password,
+                    }
+                }
 
     if validate_data(website,email,password):
-        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered:"
-                                    f"\nEmail: {email} \nPassword: {password} \nIs it ok to save?")
-        if is_ok:
-            with open("data.txt",'a') as pw_file:
-                pw_file.write(f"{website} | {email} | {password}\n")
+        with open("data.json",'r') as pw_file:
+            #Read the old data
+            data = json.load(pw_file)
+
+            #Update the old data with new data
+            data.update(new_data)
+
+        with open("data.json",'w') as pw_file:
+            #Save the updated Data
+            json.dump(data,pw_file,indent=4)
+
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
     else:
         messagebox.showinfo(title="Information", message="Invalid Data cannot be saved")
 
-    website_entry.delete(0, END)
-    email_entry.delete(0, END)
-    password_entry.delete(0, END)
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = tkinter.Tk()
 window.title("Password Manager")
